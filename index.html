@@ -44,22 +44,11 @@
             </div>
             <div class="input-group">
                 <label>Personality</label>
-                <textarea id="personality" placeholder="Describe your character's personality, traits, and behaviors..."></textarea>
-                <div class="personality-tips">
-                    <p>Create a rich, engaging personality for your AI companion:</p>
-                    <ul style="margin-top: 0.5rem; margin-left: 1.25rem;">
-                        <li><strong>Background:</strong> Include relevant history, experiences, and expertise</li>
-                        <li><strong>Traits:</strong> Define key personality characteristics and quirks</li>
-                        <li><strong>Speech:</strong> Describe their communication style and mannerisms</li>
-                        <li><strong>Interests:</strong> List their passions, hobbies, and favorite topics</li>
-                    </ul>
-                    <p style="margin-top: 0.5rem;">
-                        <strong>Example:</strong> "A witty software engineer with a dry sense of humor, passionate about space exploration and always ready with a Star Trek reference. Speaks in a casual yet precise manner, often using tech analogies."
-                    </p>
-                    <p style="margin-top: 0.5rem; color: var(--accent);">
-                        <strong>Pro tip:</strong> Use {{char}} as a placeholder for the character's name!
-                    </p>
-                </div>
+                <textarea id="personality" placeholder="Craft a rich, nuanced personality. Include traits, speaking style, background, interests, and unique quirks that make this character come alive."></textarea>
+                <small class="personality-tips">
+                    Tip: Be specific! Describe their communication style, emotional depth, passions, and what makes them unique.
+                    Example: "A witty software engineer with a dry sense of humor, passionate about space exploration and always ready with a Star Trek reference."
+                </small>
             </div>
             <div class="input-group">
                 <label>Initial Message</label>
@@ -115,9 +104,20 @@
                     Example: "{{user}} is a creative thinker who loves to engage in deep conversations..."
                 </small>
             </div>
-        </div>
-        <div class="settings-footer">
-            Made with ❤️ in Algeria by <a href="#" target="_blank">the single Algerian potato</a>
+            <div class="settings-section">
+                <h4>AI Model</h4>
+                <input type="text" id="aiModel" placeholder="Enter AI model identifier">
+                <small class="personality-tips">
+                    Default: sophosympatheia/rogue-rose-103b-v0.2:free
+                </small>
+            </div>
+            <div class="settings-section">
+                <h4>OpenRouter API Key</h4>
+                <input type="password" id="apiKey" placeholder="Enter your OpenRouter API key">
+                <small class="personality-tips">
+                    Get your API key from openrouter.ai
+                </small>
+            </div>
         </div>
     </div>
 

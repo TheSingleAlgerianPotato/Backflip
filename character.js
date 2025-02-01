@@ -3,13 +3,12 @@ import { marked } from 'https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js';
 export class Character {
   constructor({ name, personality, initialMessage, avatar }) {
     this.name = name;
-    // Replace placeholders in personality and initial message during creation
     this.personality = (personality + "\n\nonly take the role of the personality that's given to you it is not user or describe his actions you only have to describe your reactions")
       .replace(/{{char}}/g, name);
     this.initialMessage = initialMessage.replace(/{{char}}/g, name);
     this.avatar = avatar;
     this.chatSlots = new Map(); 
-    this.API_KEY = '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';
+    this.API_KEY = localStorage.getItem('apiKey') || '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';
     
     this.loadFromStorage();
   }
@@ -90,6 +89,9 @@ export class Character {
     const slot = this.chatSlots.get(slotId);
     if (!slot) return null;
 
+    // Update API key from localStorage in case it changed
+    this.API_KEY = localStorage.getItem('apiKey') || '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';
+
     // Add user message to messages and memory
     slot.messages.push({ sender: 'user', content: message });
     const messageWithPersonality = userPersonality 
@@ -104,6 +106,7 @@ export class Character {
     this.saveToStorage();
 
     try {
+      const model = localStorage.getItem('aiModel') || 'sophosympatheia/rogue-rose-103b-v0.2:free';
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -113,7 +116,7 @@ export class Character {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          "model": slot.memory.model,
+          "model": model,
           "messages": slot.memory.messages,
           "seed": slot.memory.seed,
         })

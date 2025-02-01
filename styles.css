@@ -139,39 +139,8 @@ body {
 }
 
 .input-group label {
-  font-size: 0.95rem;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
-  display: block;
-  font-weight: 500;
-}
-
-.input-group textarea {
-  min-height: 120px;
-  line-height: 1.5;
-  resize: vertical;
-  font-family: inherit;
-  background: var(--bg-primary);
-  border: 1px solid var(--hover-bg);
-  border-radius: 0.5rem;
-  padding: 0.75rem;
-  color: var(--text-primary);
-  width: 100%;
-  transition: border-color 0.2s ease;
-}
-
-.input-group textarea::placeholder {
+  font-size: 0.875rem;
   color: var(--text-secondary);
-  opacity: 0.7;
-}
-
-.input-group textarea:hover {
-  border-color: var(--text-secondary);
-}
-
-.input-group textarea:focus {
-  outline: none;
-  border-color: var(--accent);
 }
 
 .input-group input,
@@ -192,29 +161,6 @@ body {
   width: 100%;
   margin-top: 0.5rem;
   font-size: 0.9rem;
-}
-
-#userPersonality {
-  background: var(--bg-secondary);
-  border: 1px solid var(--hover-bg);
-  color: var(--text-primary);
-  padding: 0.75rem;
-  border-radius: 0.5rem;
-  width: 100%;
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  font-family: inherit;
-  min-height: 120px;
-  resize: vertical;
-}
-
-#userPersonality:hover {
-  border-color: var(--text-secondary);
-}
-
-#userPersonality:focus {
-  outline: none;
-  border-color: var(--accent);
 }
 
 .toggle-group {
@@ -810,82 +756,12 @@ body {
 
 .personality-tips {
   display: block;
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
   color: var(--text-secondary);
-  font-size: 0.85rem;
-  line-height: 1.5;
-  padding: 1rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  padding: 0.5rem;
   background: var(--bg-primary);
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   border: 1px solid var(--hover-bg);
-  position: relative;
-}
-
-.personality-tips::before {
-  content: '💡 Tips';
-  display: block;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  color: var(--accent);
-}
-
-.personality-tips strong {
-  color: var(--accent);
-  font-weight: 500;
-}
-
-.settings-modal {
-  display: none;
-  flex-direction: column;
-}
-
-.settings-modal.open {
-  display: flex;
-}
-
-.settings-footer {
-  padding: 1rem;
-  text-align: center;
-  color: var(--text-secondary);
-  font-size: 0.85rem;
-  background: var(--bg-secondary);
-  border-top: 1px solid var(--hover-bg);
-}
-
-.settings-footer a {
-  color: var(--accent);
-  text-decoration: none;
-}
-
-.settings-footer a:hover {
-  text-decoration: underline;
-}
-
-.socials-modal {
-  width: 300px !important;
-  text-align: center;
-}
-
-.social-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-.social-btn {
-  display: block;
-  width: 100%;
-  padding: 0.75rem;
-  background: var(--bg-primary);
-  border: 1px solid var(--hover-bg);
-  border-radius: 0.5rem;
-  color: var(--text-primary);
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.social-btn:hover {
-  background: var(--hover-bg);
-  transform: translateY(-2px);
 }

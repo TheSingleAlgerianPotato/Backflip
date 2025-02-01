@@ -7,7 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     showAvatars: localStorage.getItem('showAvatars') !== 'false', // default true
     historyStorage: localStorage.getItem('historyStorage') || '7',
     userPersonality: localStorage.getItem('userPersonality') || '',
-    userName: localStorage.getItem('userName') || ''
+    userName: localStorage.getItem('userName') || '',
+    aiModel: localStorage.getItem('aiModel') || 'sophosympatheia/rogue-rose-103b-v0.2:free',
+    apiKey: localStorage.getItem('apiKey') || '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'
   };
 
   // Settings elements
@@ -16,12 +18,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const historyStorage = document.getElementById('historyStorage');
   const userPersonalityInput = document.getElementById('userPersonality');
   const userNameInput = document.getElementById('userName');
+  const aiModelInput = document.getElementById('aiModel');
+  const apiKeyInput = document.getElementById('apiKey');
 
   // Initialize settings UI
   showAvatars.classList.toggle('active', settings.showAvatars);
   historyStorage.value = settings.historyStorage;
   userPersonalityInput.value = settings.userPersonality;
   userNameInput.value = settings.userName;
+  aiModelInput.value = settings.aiModel;
 
   // Settings event handlers
   showAvatars.addEventListener('click', () => {
@@ -44,6 +49,16 @@ document.addEventListener('DOMContentLoaded', () => {
   userNameInput.addEventListener('change', (e) => {
     settings.userName = e.target.value;
     localStorage.setItem('userName', e.target.value);
+  });
+
+  aiModelInput.addEventListener('change', (e) => {
+    settings.aiModel = e.target.value;
+    localStorage.setItem('aiModel', e.target.value);
+  });
+
+  apiKeyInput.addEventListener('change', (e) => {
+    settings.apiKey = e.target.value;
+    localStorage.setItem('apiKey', e.target.value);
   });
 
   const characters = [];
@@ -484,49 +499,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeSettingsBtn = document.getElementById('closeSettingsBtn');
   closeSettingsBtn.addEventListener('click', () => {
     settingsModal.classList.remove('open');
-  });
-
-  function showSocialsModal() {
-    const overlay = document.createElement('div');
-    overlay.className = 'dialog-overlay';
-
-    const modal = document.createElement('div');
-    modal.className = 'dialog-modal socials-modal';
-    modal.innerHTML = `
-      <div class="dialog-content">
-        <h3>Connect With Me</h3>
-        <div class="social-buttons">
-          <a href="https://wa.me/213772674724" target="_blank" class="social-btn">WhatsApp</a>
-          <a href="https://instagram.com/TRIVONCA" target="_blank" class="social-btn">Instagram</a>
-          <a href="https://t.me/zakariabelhadi" target="_blank" class="social-btn">Telegram</a>
-        </div>
-        <div class="dialog-actions">
-          <button class="btn btn-secondary" id="closeSocialsBtn">Close</button>
-        </div>
-      </div>
-    `;
-
-    const closeBtn = modal.querySelector('#closeSocialsBtn');
-    closeBtn.addEventListener('click', () => {
-      overlay.remove();
-    });
-
-    overlay.appendChild(modal);
-    document.body.appendChild(overlay);
-
-    const clickHandler = (e) => {
-      if (e.target === overlay) {
-        overlay.remove();
-        document.removeEventListener('click', clickHandler);
-      }
-    };
-
-    document.addEventListener('click', clickHandler);
-  }
-
-  document.querySelector('.settings-footer a').addEventListener('click', (e) => {
-    e.preventDefault();
-    showSocialsModal();
   });
 
   // Initialize modal state
