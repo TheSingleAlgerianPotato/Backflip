@@ -1,0 +1,146 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Backflip</title>
+    <link href="https://unpkg.com/@phosphor-icons/web@2.0.1/src/regular/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="toolbar">
+        <div class="logo">Backflip</div>
+        <div class="toolbar-actions">
+            <button id="settingsBtn" class="icon-button" title="Settings">
+                <i class="ph ph-gear"></i>
+            </button>
+            <button id="createBtn" class="icon-button" title="Create Character">
+                <i class="ph ph-plus"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="emptyState" class="characters-container empty-state">
+        <i class="ph ph-users"></i>
+        <p>No Characters Yet</p>
+        <p class="subtitle">Click + to create your first AI companion</p>
+    </div>
+
+    <div id="charactersContainer" class="characters-container">
+        <!-- Characters will be dynamically added here -->
+    </div>
+
+    <!-- Character Creation Modal -->
+    <div id="createModal" class="create-modal">
+        <div class="modal-header">
+            <h2>Create Character</h2>
+            <button class="close-modal-btn icon-button">
+                <i class="ph ph-x"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="input-group">
+                <label>Character Name</label>
+                <input type="text" id="characterName" placeholder="Enter character name">
+            </div>
+            <div class="input-group">
+                <label>Personality</label>
+                <textarea id="personality" placeholder="Describe your character's personality, traits, and behaviors..."></textarea>
+                <div class="personality-tips">
+                    <p>Create a rich, engaging personality for your AI companion:</p>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.25rem;">
+                        <li><strong>Background:</strong> Include relevant history, experiences, and expertise</li>
+                        <li><strong>Traits:</strong> Define key personality characteristics and quirks</li>
+                        <li><strong>Speech:</strong> Describe their communication style and mannerisms</li>
+                        <li><strong>Interests:</strong> List their passions, hobbies, and favorite topics</li>
+                    </ul>
+                    <p style="margin-top: 0.5rem;">
+                        <strong>Example:</strong> "A witty software engineer with a dry sense of humor, passionate about space exploration and always ready with a Star Trek reference. Speaks in a casual yet precise manner, often using tech analogies."
+                    </p>
+                    <p style="margin-top: 0.5rem; color: var(--accent);">
+                        <strong>Pro tip:</strong> Use {{char}} as a placeholder for the character's name!
+                    </p>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Initial Message</label>
+                <input type="text" id="initialMessage" placeholder="First message from the character">
+            </div>
+            <div class="input-group">
+                <label>Avatar</label>
+                <input type="file" id="avatarInput" accept="image/*">
+                <div id="avatarPreview" class="avatar-preview">+</div>
+            </div>
+            <div class="modal-actions">
+                <button id="createCharacterBtn" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="settings-modal">
+        <div class="settings-header">
+            <button id="closeSettingsBtn" class="icon-button">
+                <i class="ph ph-x"></i>
+            </button>
+            <h2>Settings</h2>
+        </div>
+        <div class="settings-content">
+            <div class="settings-section">
+                <h4>Display Settings</h4>
+                <div class="toggle-group">
+                    <div class="toggle-info">
+                        <h4>Show Avatars</h4>
+                        <button id="showAvatars" class="toggle-switch"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="settings-section">
+                <h4>Chat History</h4>
+                <select id="historyStorage">
+                    <option value="7">7 Days</option>
+                    <option value="30">30 Days</option>
+                    <option value="90">90 Days</option>
+                    <option value="0">Unlimited</option>
+                </select>
+            </div>
+            <div class="settings-section">
+                <h4>Your Name</h4>
+                <input type="text" id="userName" placeholder="Enter your name">
+            </div>
+            <div class="settings-section">
+                <h4>Your Personality</h4>
+                <textarea id="userPersonality" placeholder="Describe your personality for more natural conversations"></textarea>
+                <small class="personality-tips">
+                    Tip: Use {{user}} as a placeholder for your name and {{char}} for the character's name.
+                    Example: "{{user}} is a creative thinker who loves to engage in deep conversations..."
+                </small>
+            </div>
+        </div>
+        <div class="settings-footer">
+            Made with ❤️ in Algeria by <a href="#" target="_blank">the single Algerian potato</a>
+        </div>
+    </div>
+
+    <!-- Chat Interface -->
+    <div id="chatInterface" class="chat-interface">
+        <div class="chat-header">
+            <button id="closeChatBtn" class="icon-button">
+                <i class="ph ph-x"></i>
+            </button>
+            <h3 id="chatCharacterName"></h3>
+            <button id="toggleSlotsBtn" class="icon-button toggle-slots-btn" title="Toggle Chat Slots">
+                <i class="ph ph-caret-down"></i>
+            </button>
+        </div>
+        <div id="chatMessages" class="chat-messages"></div>
+        <div class="chat-input">
+            <textarea id="messageInput" placeholder="Type a message..."></textarea>
+            <button id="sendMessageBtn" class="icon-button send-btn">
+                <i class="ph ph-paper-plane-tilt"></i>
+            </button>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
