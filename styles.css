@@ -405,6 +405,30 @@ body {
   border-radius: 0.5rem;
   margin-bottom: 0.5rem;
   animation: message-appear 0.3s ease-out;
+  position: relative;
+  transition: background-color 0.2s ease;
+}
+
+.message.editable {
+  cursor: pointer;
+}
+
+.message.editable:hover {
+  background-color: var(--hover-bg);
+}
+
+.message.editable::after {
+  content: '✎';
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+  font-size: 0.8rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.message.editable:hover::after {
+  opacity: 0.7;
 }
 
 .message.user {
@@ -414,8 +438,32 @@ body {
 }
 
 .message.character {
+  position: relative;
+  padding-bottom: 1.5rem;
   color: var(--text-primary);
   align-self: flex-start;
+}
+
+.message.character .regenerate-btn {
+  position: absolute;
+  bottom: 0.25rem;
+  right: 0.25rem;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  padding: 0.25rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.message.character:hover .regenerate-btn {
+  opacity: 0.7;
+}
+
+.message.character .regenerate-btn:hover {
+  opacity: 1;
+  color: var(--accent);
 }
 
 @keyframes message-appear {
@@ -427,6 +475,19 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.edit-message-input {
+  width: 100%;
+  min-height: 100px;
+  background: var(--bg-primary);
+  border: 1px solid var(--hover-bg);
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  color: var(--text-primary);
+  font-family: inherit;
+  resize: vertical;
+  margin: 1rem 0;
 }
 
 .chat-input {
@@ -552,6 +613,11 @@ body {
 .btn-danger {
   background: #ff6b6b;
   color: white;
+  margin-right: auto;
+}
+
+.btn-danger:hover {
+  background: #ff5252;
 }
 
 .settings-modal {
@@ -616,6 +682,9 @@ body {
   color: var(--text-primary);
 }
 
+.settings-section input[type="text"],
+.settings-section input[type="password"],
+.settings-section textarea,
 .settings-section select {
   background: var(--bg-secondary);
   border: 1px solid var(--hover-bg);
@@ -625,6 +694,21 @@ body {
   width: 100%;
   margin-top: 0.5rem;
   font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.settings-section textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.settings-section input[type="password"] {
+  font-family: monospace;
+}
+
+.settings-section input#aiModel {
+  font-family: monospace;
+  letter-spacing: 0.5px;
 }
 
 .toggle-slots-btn {

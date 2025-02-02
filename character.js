@@ -8,7 +8,7 @@ export class Character {
     this.initialMessage = initialMessage.replace(/{{char}}/g, name);
     this.avatar = avatar;
     this.chatSlots = new Map(); 
-    this.API_KEY = localStorage.getItem('apiKey') || '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';
+    this.API_KEY = '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';
     
     this.loadFromStorage();
   }
@@ -89,9 +89,6 @@ export class Character {
     const slot = this.chatSlots.get(slotId);
     if (!slot) return null;
 
-    // Update API key from localStorage in case it changed
-    this.API_KEY = localStorage.getItem('apiKey') || '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';
-
     // Add user message to messages and memory
     slot.messages.push({ sender: 'user', content: message });
     const messageWithPersonality = userPersonality 
@@ -106,28 +103,7 @@ export class Character {
     this.saveToStorage();
 
     try {
-      const model = localStorage.getItem('aiModel') || 'sophosympatheia/rogue-rose-103b-v0.2:free';
-      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${this.API_KEY}`,
-          "HTTP-Referer": "https://backflip.ai", 
-          "X-Title": "Backflip",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          "model": model,
-          "messages": slot.memory.messages,
-          "seed": slot.memory.seed,
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('API response was not ok');
-      }
-
-      const data = await response.json();
-      const reply = data.choices[0].message.content.trim();
+      const reply = await this.generateAIResponse(slot);
       
       slot.messages.push({ sender: 'character', content: reply });
       slot.memory.messages.push({ role: "assistant", content: reply });
@@ -137,11 +113,61 @@ export class Character {
 
     } catch (error) {
       console.error('Error sending message:', error);
-      const errorMessage = "I apologize, but I'm having trouble responding right now. Please try again.";
-      slot.messages.push({ sender: 'character', content: errorMessage });
-      slot.memory.messages.push({ role: "assistant", content: errorMessage });
+      // Remove the failed message from both arrays
+      slot.messages.pop(); // Remove user message
+      slot.memory.messages.pop(); // Remove user message from memory
       this.saveToStorage();
-      return errorMessage;
+      throw error; // Re-throw to let the chat interface handle the error
     }
+  }
+
+  async regenerateMessage(messageIndex, slotId = 'default') {
+    const slot = this.chatSlots.get(slotId);
+    if (!slot || messageIndex < 0 || messageIndex >= slot.messages.length) return null;
+
+    try {
+      // Remove the old AI response from both arrays
+      slot.messages.splice(messageIndex, 1);
+      slot.memory.messages.pop(); // Remove last assistant message
+      
+      const reply = await this.generateAIResponse(slot);
+      
+      // Add new response to both arrays
+      slot.messages.push({ sender: 'character', content: reply });
+      slot.memory.messages.push({ role: "assistant", content: reply });
+      
+      this.saveToStorage();
+      return reply;
+    } catch (error) {
+      console.error('Error regenerating message:', error);
+      throw error;
+    }
+  }
+
+  async generateAIResponse(slot) {
+    const model = localStorage.getItem('aiModel') || 'sophosympatheia/rogue-rose-103b-v0.2:free';
+    const userApiKey = localStorage.getItem('apiKey');
+    
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${userApiKey || this.API_KEY}`,
+        "HTTP-Referer": "https://backflip.ai", 
+        "X-Title": "Backflip",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        "model": model,
+        "messages": slot.memory.messages,
+        "seed": slot.memory.seed,
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('API response was not ok');
+    }
+
+    const data = await response.json();
+    return data.choices[0].message.content.trim();
   }
 }

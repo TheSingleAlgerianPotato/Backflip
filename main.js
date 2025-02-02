@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     userPersonality: localStorage.getItem('userPersonality') || '',
     userName: localStorage.getItem('userName') || '',
     aiModel: localStorage.getItem('aiModel') || 'sophosympatheia/rogue-rose-103b-v0.2:free',
-    apiKey: localStorage.getItem('apiKey') || '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'
+    apiKey: localStorage.getItem('apiKey') || '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'
   };
 
   // Settings elements
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const settingsBtn = document.getElementById('settingsBtn');
   const createModal = document.getElementById('createModal');
   const closeModalBtns = document.querySelectorAll('.close-modal-btn, #closeModalBtn');
-  let createCharacterBtn = document.getElementById('createCharacterBtn');
+  const createCharacterBtn = document.getElementById('createCharacterBtn');
   const characterNameInput = document.getElementById('characterName');
   const personalityTextarea = document.getElementById('personality');
   const initialMessageInput = document.getElementById('initialMessage');
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
           name: charData.name,
           personality: charData.personality,
           initialMessage: charData.initialMessage,
-          avatar: charData.avatar // Ensure avatar is included
+          avatar: charData.avatar
         });
         
         characters.push(character);
@@ -370,7 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function openEditModal(character) {
-    let currentCharacter = character; // Fix constant assignment
+    const currentCharacter = character;
     
     characterNameInput.value = currentCharacter.name;
     personalityTextarea.value = currentCharacter.personality.split("\n\nonly take")[0];
@@ -384,18 +384,9 @@ document.addEventListener('DOMContentLoaded', () => {
       avatarPreview.textContent = '+';
     }
 
-    const oldBtn = document.getElementById('createCharacterBtn');
-    const newBtn = oldBtn.cloneNode(true);
-    newBtn.textContent = 'Save Changes';
-    oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+    createCharacterBtn.textContent = 'Save Changes';
     
-    const updatedSaveBtn = document.getElementById('createCharacterBtn');
-    
-    // Clear existing event listeners
-    updatedSaveBtn.replaceWith(updatedSaveBtn.cloneNode(true));
-    const freshSaveBtn = document.getElementById('createCharacterBtn');
-    
-    freshSaveBtn.addEventListener('click', async () => {
+    const saveHandler = async () => {
       const avatarFile = avatarInput.files[0];
       let newAvatar = currentCharacter.avatar;
 
@@ -425,7 +416,11 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         showErrorDialog('Please fill out all required fields');
       }
-    });
+    };
+
+    // Remove old event listeners and add new one
+    createCharacterBtn.removeEventListener('click', saveHandler);
+    createCharacterBtn.addEventListener('click', saveHandler);
 
     createModal.classList.add('open');
   }
@@ -439,14 +434,15 @@ document.addEventListener('DOMContentLoaded', () => {
     avatarPreview.textContent = '+';
     createModal.classList.remove('open');
     
-    const oldBtn = document.getElementById('createCharacterBtn');
-    const newBtn = oldBtn.cloneNode(true);
-    newBtn.textContent = 'Create';
-    oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+    createCharacterBtn.textContent = 'Create';
     
-    createCharacterBtn = document.getElementById('createCharacterBtn');
+    // Remove all event listeners and add the original create handler
+    const newBtn = createCharacterBtn.cloneNode(true);
+    createCharacterBtn.parentNode.replaceChild(newBtn, createCharacterBtn);
     
-    createCharacterBtn.addEventListener('click', async () => {
+    // Update the reference
+    const updatedCreateBtn = document.getElementById('createCharacterBtn');
+    updatedCreateBtn.addEventListener('click', async () => {
       if (!characterNameInput.value || !personalityTextarea.value || !initialMessageInput.value) {
         showErrorDialog('Please fill out all required fields');
         return;
